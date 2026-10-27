@@ -1,0 +1,176 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String      @id @default(cuid())
+  name         String
+  email        String      @unique
+  passwordHash String
+  role         String      @default("member")
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  active       Boolean     @default(true)
+  // 会话版本号：重置密码 / 停用后自增，旧 JWT（携带旧 sv）立即失效。
+  sessionVersion Int       @default(0)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  pagesOwned  Page[]      @relation("PageOwner")
+  pagesDeleted Page[]    @relation("PageDeletedBy")
+  unpublishRequests Page[] @relation("UnpublishRequester")
+  versions    PageVersion[]
+  auditLogs   AuditLog[]
+}
+
+model Department {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  code      String   @unique
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  users    User[]
+  pages    Page[]           @relation("PageDepartment")
+  pageDeps PageDept[]
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  pages Page[]
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  pages PageTag[]
+}
+
+model Page {
+  id               String    @id @default(cuid())
+  slug             String    @unique
+  title            String
+  summary          String?
+  visibility       String
+  status           String    @default("draft")
+  packageType      String
+  entryFile        String    @default("index.html")
+  categoryId       String?
+  ownerId          String
+  departmentId     String?
+  currentVersionId String?
+  publishedVersionId String?
+  viewCount        Int       @default(0)
+  lastViewedAt     DateTime?
+  publishedAt      DateTime?
+  rejectionComment String?
+
+  deletedAt   DateTime?
+  deletedById String?
+  deletedBy   User?     @relation("PageDeletedBy", fields: [deletedById], references: [id], onDelete: SetNull)
+
+  unpublishRequestedAt   DateTime?
+  unpublishRequestedById String?
+  unpublishRequestedBy   User?     @relation("UnpublishRequester", fields: [unpublishRequestedById], references: [id], onDelete: SetNull)
+  unpublishReason        String?
+  unpublishDecisionNote  String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  owner      User?        @relation("PageOwner", fields: [ownerId], references: [id])
+  department Department?  @relation("PageDepartment", fields: [departmentId], references: [id], onDelete: SetNull)
+  category   Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  versions  PageVersion[]
+  tags      PageTag[]
+  deptDeps  PageDept[]
+  viewStats ViewStat[]
+
+  @@index([status])
+  @@index([visibility])
+  @@index([unpublishRequestedAt])
+  @@index([deletedAt])
+  @@index([categoryId])
+  @@index([departmentId])
+  @@index([ownerId])
+}
+
+model PageDept {
+  pageId       String
+  departmentId String
+
+  page       Page       @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  department Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+
+  @@id([pageId, departmentId])
+  @@index([departmentId])
+}
+
+model PageVersion {
+  id           String   @id @default(cuid())
+  pageId       String
+  versionNo    Int
+  storagePath  String
+  sizeBytes    Int
+  fileCount    Int      @default(1)
+  changelog    String?
+  uploadedById String
+  createdAt    DateTime @default(now())
+
+  page       Page  @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  uploadedBy User  @relation(fields: [uploadedById], references: [id])
+
+  @@unique([pageId, versionNo])
+  @@index([pageId])
+}
+
+model PageTag {
+  pageId String
+  tagId  String
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([pageId, tagId])
+  @@index([tagId])
+}
+
+model ViewStat {
+  pageId String
+  date   String
+  count  Int @default(0)
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@id([pageId, date])
+  @@index([date])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  // 操作人姓名快照：写入时固定。用户改名 / 被删除后，历史日志仍显示当时的姓名。
+  actorName String?
+  action    String
+  pageId    String?
+  versionId String?
+  ip        String?
+  ua        String?
+  detail    String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([pageId])
+  @@index([userId])
+}

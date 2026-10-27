@@ -1,0 +1,39 @@
+{
+  "name": "html-management-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "公司 HTML 统一管理平台 - 内外网访问隔离",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:stop": "node scripts/dev-stop.mjs",
+    "dev:server": "pnpm --filter @hmp/server dev",
+    "dev:web": "pnpm --filter @hmp/web dev",
+    "build": "pnpm --filter @hmp/server build && pnpm --filter @hmp/web build",
+    "typecheck": "pnpm --filter @hmp/server typecheck && pnpm --filter @hmp/web typecheck",
+    "db:reset": "pnpm --filter @hmp/server db:reset",
+    "db:seed": "pnpm --filter @hmp/server db:seed",
+    "db:schema:mysql": "node scripts/gen-mysql-schema.mjs",
+    "nginx:config": "node scripts/gen-nginx-config.mjs",
+    "verify:isolation": "node scripts/verify-isolation.mjs",
+    "verify:layout": "node scripts/verify-layout.mjs",
+    "verify:preview": "node scripts/verify-preview.mjs",
+    "verify": "node scripts/verify.mjs",
+    "verify:styles": "node scripts/verify-styles.mjs",
+    "lint": "pnpm --filter @hmp/server lint && pnpm --filter @hmp/web lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma",
+      "esbuild",
+      "vue-demi"
+    ]
+  }
+}

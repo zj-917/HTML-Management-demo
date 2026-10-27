@@ -1,0 +1,36 @@
+{
+  "sites": [
+    {
+      "id": "intranet",
+      "label": "内网站点",
+      "hostPatterns": ["intranet.*", "admin.*", "127.0.0.1:5173", "localhost:5173", "10.*", "172.16.*", "192.168.*"],
+      "scope": "full",
+      "anonymous": false,
+      "contentRoots": ["public", "internal", "dept"],
+      "manageEnabled": true
+    },
+    {
+      "id": "external",
+      "label": "外网站点",
+      "hostPatterns": ["www.*", "127.0.0.1:5174", "localhost:5174", "203.0.113.*", "198.51.100.*"],
+      "scope": "public-only",
+      "anonymous": true,
+      "contentRoots": ["public"],
+      "manageEnabled": false
+    }
+  ],
+  "defaultSiteId": "intranet",
+  "fallbackSiteId": "external",
+  "prodHosts": {
+    "intranet": "intranet.corp.example.com",
+    "admin": "admin.corp.example.com",
+    "external": "www.corp.example.com"
+  },
+  "ports": {
+    "api": 3000,
+    "webInternal": 5173,
+    "webExternal": 5174,
+    "contentInternal": 4000,
+    "contentExternal": 4001
+  }
+}

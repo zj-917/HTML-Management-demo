@@ -1,0 +1,14 @@
+# 统一换行策略：仓库内一律 LF。
+# 这套代码要跑在 CentOS 上，CRLF 会让 deploy/*.sh 报
+# "/usr/bin/env: ‘bash\r’: No such file or directory"，
+# 也会让 nginx 配置里出现肉眼看不见的 \r。
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.mp4 binary
+*.woff binary
+*.woff2 binary

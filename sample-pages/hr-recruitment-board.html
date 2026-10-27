@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>招聘需求看板</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#fff7ed;color:#431407;padding:24px}
+  .wrap{max-width:760px;margin:0 auto}
+  .head{background:linear-gradient(135deg,#9a3412,#ea580c);color:#fff;border-radius:12px;padding:22px}
+  .head h1{font-size:22px}
+  .head .b{display:inline-block;background:rgba(255,255,255,.22);border-radius:18px;padding:3px 11px;font-size:12px;margin-top:9px}
+  .list{margin-top:16px;display:flex;flex-direction:column;gap:12px}
+  .job{background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+  .job h3{font-size:16px}
+  .job .meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:#78716c}
+  .tag{background:#ffedd5;color:#9a3412;border-radius:4px;padding:2px 8px;font-size:12px}
+  .foot{text-align:center;color:#a8a29e;font-size:12px;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>招聘需求看板</h1>
+    <p style="opacity:.9;font-size:13px;margin-top:6px">2026 年 4 月开放岗位</p>
+    <div class="b">仅人力资源部可见 · 薪酬信息不对外披露</div>
+  </div>
+
+  <div class="list">
+    <div class="job">
+      <h3>高级前端工程师 <span class="tag">急招</span></h3>
+      <div class="meta"><span>部门：研发中心</span><span>编制：2</span><span>到岗：30 天内</span></div>
+    </div>
+    <div class="job">
+      <h3>大客户销售经理</h3>
+      <div class="meta"><span>部门：销售部</span><span>编制：3</span><span>到岗：45 天内</span></div>
+    </div>
+    <div class="job">
+      <h3>财务分析师</h3>
+      <div class="meta"><span>部门：财务部</span><span>编制：1</span><span>到岗：60 天内</span></div>
+    </div>
+    <div class="job">
+      <h3>HRBP</h3>
+      <div class="meta"><span>部门：人力资源部</span><span>编制：1</span><span>到岗：30 天内</span></div>
+    </div>
+  </div>
+
+  <div class="foot">本页设置为「指定部门可见」，仅人力资源部成员登录后可访问</div>
+</div>
+</body>
+</html>

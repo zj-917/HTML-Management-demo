@@ -1,0 +1,44 @@
+# syntax=docker/dockerfile:1
+FROM node:22-alpine AS deps
+WORKDIR /app
+RUN corepack enable && apk add --no-cache openssl
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY server/package.json server/
+COPY web/package.json web/
+RUN pnpm install --frozen-lockfile --filter @hmp/server
+
+FROM deps AS build
+WORKDIR /app
+COPY shared ./shared
+COPY server ./server
+COPY scripts/gen-mysql-schema.mjs ./scripts/gen-mysql-schema.mjs
+# 生产库是 MySQL，而 server/prisma/schema.prisma 是开发用的 SQLite。
+# 这里先由它派生出 schema.mysql.prisma，再用派生版生成 Prisma Client：
+# datasource provider 会被固化进客户端，用 SQLite schema 生成的客户端
+# 在运行时拿到 mysql:// 会直接报错。顺序不能调换。
+RUN node scripts/gen-mysql-schema.mjs \
+ && cd server \
+ && node node_modules/prisma/build/index.js generate --schema=prisma/schema.mysql.prisma \
+ && cd /app \
+ && pnpm --filter @hmp/server build
+
+FROM node:22-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+RUN apk add --no-cache openssl \
+ && addgroup -S hmp && adduser -S hmp -G hmp
+# node_modules 必须取自 build 阶段（不是 deps）：@prisma/client 是在 build 里生成的，
+# 从 deps 拷贝会拿到「尚未生成」的占位包，容器一起来就报 PrismaClientInitializationError。
+# 运行镜像里保留 prisma CLI，供 api-migrate 一次性服务执行 db push。
+COPY --from=build /app/node_modules                     ./node_modules
+COPY --from=build /app/server/node_modules              ./server/node_modules
+COPY --from=build /app/server/dist                      ./server/dist
+COPY --from=build /app/server/prisma/schema.mysql.prisma ./server/prisma/schema.mysql.prisma
+COPY server/prisma/create-admin.mjs                     ./server/prisma/create-admin.mjs
+COPY --from=build /app/shared                           ./shared
+COPY --from=build /app/package.json                     ./package.json
+COPY config                                             ./config
+RUN mkdir -p /app/data && chown -R hmp:hmp /app/data
+USER hmp
+EXPOSE 3000
+CMD ["node", "server/dist/server/src/main.js"]

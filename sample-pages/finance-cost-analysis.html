@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成本结构分析（内部）</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:#f6f5fb;color:#2d2a3d;padding:26px}
+  .wrap{max-width:920px;margin:0 auto}
+  .banner{background:linear-gradient(135deg,#5b21b6,#8b5cf6);color:#fff;border-radius:14px;padding:24px}
+  .banner h1{font-size:24px}
+  .banner .badge{display:inline-block;background:rgba(255,255,255,.2);border-radius:20px;padding:3px 12px;font-size:12px;margin-top:10px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:18px 0}
+  .card{background:#fff;border-radius:10px;padding:18px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .card .t{font-size:13px;color:#6b7280}
+  .card .v{font-size:22px;font-weight:700;margin-top:6px;color:#5b21b6}
+  .panel{background:#fff;border-radius:10px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:14px}
+  .panel h2{font-size:15px;margin-bottom:12px}
+  .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #eeeef5;font-size:14px}
+  .row:last-child{border-bottom:none}
+  .warn{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:16px;font-size:13px;color:#9a3412}
+  .foot{text-align:center;color:#9ca3af;font-size:12px;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner">
+    <h1>成本结构分析</h1>
+    <p style="opacity:.9;font-size:13px;margin-top:6px">2026 年 3 月 · 财务部</p>
+    <div class="badge">仅内网可见 · 含未公开财务数据</div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="t">总成本</div><div class="v">¥ 3,012 万</div></div>
+    <div class="card"><div class="t">人力成本占比</div><div class="v">46.8%</div></div>
+    <div class="card"><div class="t">营销费用占比</div><div class="v">23.1%</div></div>
+    <div class="card"><div class="t">毛利率</div><div class="v">38.2%</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>成本构成明细</h2>
+    <div class="row"><span>人力成本</span><b>¥ 1,409 万</b></div>
+    <div class="row"><span>营销推广</span><b>¥ 696 万</b></div>
+    <div class="row"><span>供应链与物流</span><b>¥ 428 万</b></div>
+    <div class="row"><span>研发投入</span><b>¥ 312 万</b></div>
+    <div class="row"><span>管理及行政</span><b>¥ 167 万</b></div>
+  </div>
+
+  <div class="warn">
+    <b>风险提示：</b>营销费用环比增长 18.4%，快于收入增速 11.2%，建议 Q2 收紧投放结构。详细测算过程仅在财务内部文档，未在本页展示。
+  </div>
+
+  <div class="foot">本页为内网专属内容，外网入口访问将直接返回 404</div>
+</div>
+</body>
+</html>

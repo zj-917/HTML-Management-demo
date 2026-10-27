@@ -1,0 +1,390 @@
+/* ============================================================
+   设计基座 — 羊皮纸 / 档案风
+   纸(surface) → 墨(ink) → 朱(accent) → 语义 → 深墨侧栏
+   所有颜色只允许在本文件的 :root 中定义，其他地方一律用 var() 引用。
+   ============================================================ */
+
+:root {
+  /* ---- 纸：背景三层，卡片比页面浅 ---- */
+  --hmp-surface-sunken: #ede5d6; /* 筛选栏底、页头凹陷区 */
+  --hmp-surface-base: #efe8da; /* 页面主背景 */
+  --hmp-surface-raised: #f8f3e8; /* 卡片、表格容器 */
+  --hmp-surface-overlay: #fffdf8; /* 弹窗、下拉、浮层 */
+  --hmp-surface-inverse: #262119; /* 深墨侧栏 */
+
+  /* ---- 墨：文字层级（均已对 #efe8da 校验 WCAG AA）---- */
+  --hmp-text: #2c2620; /* 13.5:1 */
+  --hmp-text-regular: #4a4038; /* 9.2:1 */
+  --hmp-muted: #6e6153; /* 5.4:1 */
+  --hmp-text-placeholder: #9a8d7c;
+  --hmp-text-inverse: #f2ebdd;
+
+  /* ---- 朱：铁胆墨水蓝主色 ---- */
+  --hmp-primary: #2f4f6f;
+  --hmp-primary-hover: #3a5f84;
+  --hmp-primary-active: #24405c;
+  --hmp-primary-light: #eaedf1;
+
+  /* ---- 语义：蜡封红 / 苔绿 / 赭石 ---- */
+  --hmp-success: #4a6741;
+  --hmp-warning: #a8763e;
+  --hmp-danger: #8c3a2b;
+
+  /* 可见性徽章 */
+  --hmp-public: var(--hmp-success);
+  --hmp-internal: var(--hmp-primary);
+  --hmp-dept: var(--hmp-warning);
+
+  /* ---- 边框三级 ---- */
+  --hmp-border: #dcd2be;
+  --hmp-border-light: #e6decc;
+  --hmp-border-lighter: #efe8da;
+
+  /* ---- 深墨侧栏 ---- */
+  --hmp-sidebar-text: #c9bca5;
+  --hmp-sidebar-text-active: #f8f3e8;
+  --hmp-sidebar-border: rgb(242 235 221 / 10%);
+  --hmp-sidebar-hover: rgb(242 235 221 / 7%);
+  --hmp-sidebar-active: rgb(242 235 221 / 12%);
+
+  /* ---- 间距 ---- */
+  --hmp-space-1: 4px;
+  --hmp-space-2: 8px;
+  --hmp-space-3: 12px;
+  --hmp-space-4: 16px;
+  --hmp-space-5: 20px;
+  --hmp-space-6: 24px;
+  --hmp-space-7: 32px;
+
+  /* ---- 圆角 ---- */
+  --hmp-radius-sm: 3px;
+  --hmp-radius: 5px;
+  --hmp-radius-lg: 8px;
+
+  /* ---- 阴影：暖色调而非中性黑，避免米底发脏 ---- */
+  --hmp-shadow-sm: 0 1px 2px rgb(74 64 56 / 6%);
+  --hmp-shadow: 0 2px 8px rgb(74 64 56 / 8%);
+  --hmp-shadow-hover: 0 6px 18px rgb(74 64 56 / 14%);
+
+  /* ---- 字体 ---- */
+  --hmp-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  /* 衬线只用于页面标题与品牌标识；正文与表格保持无衬线以保证小字号与数字可读 */
+  --hmp-font-serif: 'Songti SC', 'Noto Serif CJK SC', 'Source Han Serif SC', STSong, SimSun, serif;
+
+  /* ---- 字号 ---- */
+  --hmp-text-xs: 12px;
+  --hmp-text-sm: 13px;
+  --hmp-text-base: 14px;
+  --hmp-text-lg: 16px;
+  --hmp-text-xl: 20px;
+  --hmp-text-2xl: 24px;
+  --hmp-line-height: 1.6;
+
+  /* ---- 布局 ---- */
+  --hmp-header-height: 58px;
+  --hmp-content-max: 1200px;
+  /* 断点常量。CSS 变量无法用于媒体查询，CSS 里的字面量以此为准，
+     JS 常量见 web/src/constants/breakpoints.ts，两处必须同步修改。 */
+  --hmp-bp-mobile: 768px;
+  --hmp-bp-sidebar: 900px;
+}
+
+/* ============================================================
+   Element Plus 主题覆盖
+   注意：EP 的 dist CSS 把 primary-light-3/5/7/8/9 与 dark-2 全部
+   硬编码为从 #409eff 推导的值。只覆写 --el-color-primary 不够，
+   衍生色必须逐个覆写，否则仍然会看到官方蓝。
+   ============================================================ */
+
+:root {
+  /* 主色阶梯（由 #2f4f6f 与白色按 EP 算法混合得出） */
+  --el-color-primary: #2f4f6f;
+  --el-color-primary-light-3: #6d849a;
+  --el-color-primary-light-5: #97a7b7;
+  --el-color-primary-light-7: #c1cad4;
+  --el-color-primary-light-8: #d5dce2;
+  --el-color-primary-light-9: #eaedf1;
+  --el-color-primary-dark-2: #263f59;
+
+  --el-color-success: #4a6741;
+  --el-color-success-light-3: #80957a;
+  --el-color-success-light-5: #a5b3a0;
+  --el-color-success-light-7: #c9d1c6;
+  --el-color-success-light-8: #dbe1d9;
+  --el-color-success-light-9: #edf0ec;
+  --el-color-success-dark-2: #3b5234;
+
+  --el-color-warning: #a8763e;
+  --el-color-warning-light-3: #c29f78;
+  --el-color-warning-light-5: #d4bb9f;
+  --el-color-warning-light-7: #e5d6c5;
+  --el-color-warning-light-8: #eee4d8;
+  --el-color-warning-light-9: #f6f1ec;
+  --el-color-warning-dark-2: #865e32;
+
+  --el-color-danger: #8c3a2b;
+  --el-color-danger-light-3: #af756b;
+  --el-color-danger-light-5: #c69d95;
+  --el-color-danger-light-7: #ddc4bf;
+  --el-color-danger-light-8: #e8d8d5;
+  --el-color-danger-light-9: #f4ebea;
+  --el-color-danger-dark-2: #702e22;
+
+  --el-color-error: var(--el-color-danger);
+  --el-color-error-light-3: var(--el-color-danger-light-3);
+  --el-color-error-light-5: var(--el-color-danger-light-5);
+  --el-color-error-light-7: var(--el-color-danger-light-7);
+  --el-color-error-light-8: var(--el-color-danger-light-8);
+  --el-color-error-light-9: var(--el-color-danger-light-9);
+  --el-color-error-dark-2: var(--el-color-danger-dark-2);
+
+  --el-color-info: #5a6b7a;
+  --el-color-info-light-3: #8c97a2;
+  --el-color-info-light-5: #adb5bd;
+  --el-color-info-light-7: #cdd2d6;
+  --el-color-info-light-8: #dee1e4;
+  --el-color-info-light-9: #eff0f2;
+  --el-color-info-dark-2: #485662;
+
+  /* 背景 */
+  --el-bg-color: var(--hmp-surface-overlay);
+  --el-bg-color-page: var(--hmp-surface-base);
+  --el-bg-color-overlay: var(--hmp-surface-overlay);
+
+  /* 文字 */
+  --el-text-color-primary: var(--hmp-text);
+  --el-text-color-regular: var(--hmp-text-regular);
+  --el-text-color-secondary: var(--hmp-muted);
+  --el-text-color-placeholder: var(--hmp-text-placeholder);
+  --el-text-color-disabled: var(--hmp-text-placeholder);
+
+  /* 边框 */
+  --el-border-color: var(--hmp-border);
+  --el-border-color-light: var(--hmp-border-light);
+  --el-border-color-lighter: var(--hmp-border-lighter);
+  --el-border-color-extra-light: var(--hmp-border-lighter);
+  --el-border-color-dark: var(--hmp-border);
+  --el-border-color-darker: #c9bda4;
+
+  /* 填充（表格 hover、禁用态底色） */
+  --el-fill-color: var(--hmp-surface-sunken);
+  --el-fill-color-light: var(--hmp-surface-sunken);
+  --el-fill-color-lighter: var(--hmp-surface-base);
+  --el-fill-color-extra-light: var(--hmp-surface-raised);
+  --el-fill-color-blank: var(--hmp-surface-overlay);
+  --el-fill-color-dark: #ddd2bd;
+  --el-fill-color-darker: #d6c9b0;
+
+  /* 圆角：比 EP 默认略方，贴合纸质感 */
+  --el-border-radius-base: var(--hmp-radius);
+  --el-border-radius-small: var(--hmp-radius-sm);
+
+  /* 字体 */
+  --el-font-family: var(--hmp-font-sans);
+  --el-font-size-base: var(--hmp-text-base);
+
+  /* 阴影：暖色 */
+  --el-box-shadow-light: var(--hmp-shadow-sm);
+  --el-box-shadow: var(--hmp-shadow);
+}
+
+/* ============================================================
+   基础
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--hmp-surface-base);
+  color: var(--hmp-text);
+  font-family: var(--hmp-font-sans);
+  line-height: var(--hmp-line-height);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   Element Plus 组件微调
+   ============================================================ */
+
+/* 表格：容器比页面浅形成明确边界，分隔线用实线避免米底发糊，
+   数字用等宽字形保证上下行对齐。 */
+.el-table {
+  --el-table-border-color: var(--hmp-border-light);
+  --el-table-header-bg-color: var(--hmp-surface-sunken);
+  --el-table-header-text-color: var(--hmp-text-regular);
+  --el-table-row-hover-bg-color: var(--hmp-surface-sunken);
+  --el-table-bg-color: var(--hmp-surface-raised);
+  --el-table-tr-bg-color: var(--hmp-surface-raised);
+  --el-table-current-row-bg-color: var(--hmp-primary-light);
+  font-variant-numeric: tabular-nums;
+}
+
+.el-table th.el-table__cell {
+  font-weight: 600;
+}
+
+/* 卡片：米色边框 + 极淡暖阴影，替代 EP 默认灰阴影 */
+.el-card {
+  border-color: var(--hmp-border-light);
+}
+
+.el-card.is-always-shadow,
+.el-card.is-hover-shadow:hover {
+  box-shadow: var(--hmp-shadow);
+}
+
+/* 弹窗/下拉浮层：比页面更亮的纸色，形成明确的层级 */
+.el-dialog,
+.el-popper,
+.el-drawer {
+  background: var(--hmp-surface-overlay);
+}
+
+.el-popper.is-light {
+  background: var(--hmp-surface-overlay);
+  border-color: var(--hmp-border-light);
+}
+
+/* 菜单：深墨侧栏里的选中态与悬停态 */
+.el-menu {
+  --el-menu-bg-color: transparent;
+  --el-menu-text-color: var(--hmp-sidebar-text);
+  --el-menu-active-color: var(--hmp-sidebar-text-active);
+  --el-menu-hover-bg-color: var(--hmp-sidebar-hover);
+}
+
+/* ============================================================
+   工具类
+   ============================================================ */
+
+.hmp-visibility {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--hmp-space-1);
+  font-size: var(--hmp-text-xs);
+  line-height: 1;
+  padding: 3px var(--hmp-space-2);
+  border-radius: var(--hmp-radius-sm);
+  white-space: nowrap;
+}
+
+.hmp-visibility--public {
+  color: var(--hmp-surface-overlay);
+  background: var(--hmp-public);
+}
+
+.hmp-visibility--internal {
+  color: var(--hmp-surface-overlay);
+  background: var(--hmp-internal);
+}
+
+.hmp-visibility--dept {
+  color: var(--hmp-surface-overlay);
+  background: var(--hmp-dept);
+}
+
+.hmp-page-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--hmp-space-4);
+}
+
+.hmp-page-card {
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.hmp-page-card:hover {
+  box-shadow: var(--hmp-shadow-hover);
+}
+
+.hmp-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hmp-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hmp-preview-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: var(--hmp-surface-overlay);
+}
+
+/* ---- 布局工具类（替代各页面重复的样式块）---- */
+
+.hmp-page-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--hmp-space-3);
+  margin-bottom: var(--hmp-space-4);
+  flex-wrap: wrap;
+}
+
+.hmp-page-title {
+  margin: 0;
+  font-family: var(--hmp-font-serif);
+  font-size: var(--hmp-text-xl);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--hmp-text);
+}
+
+.hmp-card-title {
+  font-weight: 600;
+  color: var(--hmp-text);
+}
+
+.hmp-pager {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--hmp-space-4);
+}
+
+.hmp-cell-title {
+  font-weight: 600;
+  color: var(--hmp-text);
+}
+
+.hmp-cell-sub {
+  color: var(--hmp-muted);
+  font-size: var(--hmp-text-xs);
+  margin-top: 2px;
+}
+
+.hmp-section-label {
+  color: var(--hmp-muted);
+  font-size: var(--hmp-text-sm);
+  margin-bottom: var(--hmp-space-2);
+}
+
+/* 数字对齐：统计数值、表格里的量值 */
+.hmp-numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+  .hmp-page-grid {
+    grid-template-columns: 1fr;
+  }
+}

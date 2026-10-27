@@ -1,0 +1,27 @@
+# 构建上下文瘦身 + 防止把本机数据打进镜像。
+# 之前没有这个文件：`docker compose build` 会打包 637MB 的 node_modules、
+# 7.7MB 的 data/（里面是真实上传文件）和 54MB 的浏览器 profile。
+
+node_modules
+**/node_modules
+dist
+**/dist
+*.tsbuildinfo
+
+# 运行期数据卷，绝不能进镜像
+data
+deploy/.env
+.env
+.env.local
+
+# 浏览器自动化产物
+.chrome-profile
+.chrome-cdp-profile
+.screenshots
+
+# 与镜像无关
+docs
+sample-pages
+.git
+*.log
+*.log.err

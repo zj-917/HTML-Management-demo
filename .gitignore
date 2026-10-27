@@ -1,0 +1,28 @@
+node_modules/
+dist/
+build/
+.data/
+data/
+*.log
+*.log.err
+.env
+deploy/.env
+.env.local
+.DS_Store
+coverage/
+*.tsbuildinfo
+deploy/nginx/generated/
+
+# 浏览器自动化留下的 profile / 截图（scripts/screenshot.mjs、verify-preview.mjs）
+.chrome-profile/
+.chrome-cdp-profile/
+.screenshots/
+
+# 由 scripts/gen-mysql-schema.mjs 生成，唯一事实来源是 server/prisma/schema.prisma
+server/prisma/schema.mysql.prisma
+
+# 开发库（SQLite），绝不入库；生产用 MySQL
+server/prisma/dev.db
+server/prisma/dev.db-journal
+server/prisma/dev.db-wal
+server/prisma/dev.db-shm
